@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -14,7 +15,16 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::all();
+        $student = Student::query()
+            ->where('user_id', auth()->user()->id)
+            ->first();
+        $courses = Course::query()
+            ->when(auth()->user()->type == 'student', function ($q) use ($student) {
+                $q->whereHas('assignCourses', function ($q) use ($student) {
+                    $q->where('student_id', $student->id);
+                });
+            })
+            ->get();
         return view('course.index', compact('courses'));
     }
 
@@ -92,6 +102,5 @@ class CourseController extends Controller
     public function buy($id)
     {
         return $id . auth()->user()->id;
-        
     }
 }

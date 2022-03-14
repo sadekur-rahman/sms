@@ -19,7 +19,9 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::all();
+        $students = Student::query()
+           
+            ->get();
         return view('student.index', compact('students'));
     }
 
@@ -56,13 +58,12 @@ class StudentController extends Controller
             $student->user_id = $user->id;
             $student->save();
         }
-        if($student->save()){
-            foreach($request->course_id as $value){
+        if ($student->save()) {
+            foreach ($request->course_id as $value) {
                 $assign = new AssignCourse();
                 $assign->student_id = $student->id;
                 $assign->course_id = $value;
                 $assign->save();
-
             }
         }
         return redirect()->route('student.index')->with('message', 'student added');
