@@ -23,12 +23,16 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware(['auth'])->group(function () {
 
-Route::resource('student', StudentController::class);
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('course/buy/{id}', [CourseController::class, 'buy'])->name('course.buy');
-Route::resource('course', CourseController::class);
+    Route::resource('student', StudentController::class);
+
+    Route::get('course/buy/{id}', [CourseController::class, 'buy'])->name('course.buy');
+    Route::resource('course', CourseController::class);
+});
+
 
 
 Route::get('payment', [PayPalController::class, 'payment'])->name('payment');

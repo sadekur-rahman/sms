@@ -13,6 +13,7 @@
                     <tr>
                         <td>Name</td>
                         <td>Registration No</td>
+                        <td>Action</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -20,6 +21,7 @@
                         <tr>
                             <td>{{ $item->first_name }} {{ $item->last_name }}</td>
                             <td>{{ $item->registration_no }}</td>
+                            <td><a href="{{ route('student.show', $item->id) }}">Details</a></td>
                         </tr>
                     @endforeach
                 </tbody>
