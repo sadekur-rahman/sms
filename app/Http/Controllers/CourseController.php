@@ -105,6 +105,14 @@ class CourseController extends Controller
     }
     public function buy($id)
     {
-        return $id . auth()->user()->id;
+        $course = Course::find($id);
+        $student = Student::query()
+            ->where('user_id', auth()->user()->id)
+            ->first();
+
+        if ($student) {
+            return view('test', compact('course', 'student'));
+        }
+        return redirect()->route('home')->with('message','You are not a Student');
     }
 }

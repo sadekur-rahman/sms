@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\PayPalController;
+use App\Http\Controllers\StripeController;
 use App\Http\Controllers\StudentController;
 
 /*
@@ -33,8 +34,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('course', CourseController::class);
 });
 
+Route::get('stripe', [StripeController::class, 'stripe']);
+Route::post('payment', [StripeController::class, 'payStripe']);
 
-
-Route::get('payment', [PayPalController::class, 'payment'])->name('payment');
-Route::get('cancel', [PayPalController::class, 'cancel'])->name('payment.cancel');
-Route::get('payment/success', [PayPalController::class, 'success'])->name('payment.success');
